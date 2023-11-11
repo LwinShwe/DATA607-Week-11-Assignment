@@ -1,0 +1,130 @@
+---
+title: "607 Week11 Assignment"
+author: "Lwin Shwe"
+date: "2023-11-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## NYC Food and Restaurant Recommender System based on Natural Language Processing (NLP)
+
+### Introduction
+
+A recommendation system uses information about past purchases or ratings or of products by a group of users to provide personalized recommendations to individual users. The data on which they rely comprises of past user interactions with items, called collaborative information, and item attributes, called content information. This discussion assignment analyzes user reviews in restaurant do- main, and then consolidates the information recommending the best dishes served to a customer at a restaurant. The system is developed using modern NLP techniques such as sentiment lexicon, sentiment scores, POS tagging to generate useful features. 
+The problem statement is trying to recommend similar restaurant based on a user’s previous visits. But this approach might be the best in building a system which recommends a customer with a set of meals which have been classified into three broad categories such as Good, Average and Bad based on previous reviews. 
+Many online web portals allow customers to share their experience and rate a given restaurant based on it. The number of reviews generated is huge and it is an enormous task to analyze them and generate some useful information that a new customer can utilize. 
+The sentiment analysis of textual reviews on social media platforms is a valuable source of information for building recommendation engines and assessing the quality of businesses by the use natural language processing (NLP) techniques to analyze the sentiment of each review (positive, negative, or neutral) and identifying specific aspects of the business (e.g., service, ambiance, food quality) and assess sentiment for each aspect to understand customer sentiment, identify areas for improvement, and offer personalized recommendations. 
+
+
+### Data Collection
+
+The number of restaurants in New York is increasing day by day. Lots of students and busy professionals rely on those restaurants due to their hectic lifestyles. Online food delivery service is a great option for them. It provides them with good food from their favorite restaurants. A food aggregator company FoodHub, https://foodhub.com, offers access to multiple restaurants through a single smartphone app. The app allows the restaurants to receive a direct online order from a customer. The app assigns a delivery person from the company to pick up the order after it is confirmed by the restaurant. The delivery person then uses the map to reach the restaurant and waits for the food package. Once the food package is handed over to the delivery person, he/she confirms the pick-up in the app and travels to the customer's location to deliver the food. The delivery person confirms the drop-off in the app after delivering the food package to the customer. The customer can rate the order in the app. The food aggregation earns money by collecting a fixed margin of the delivery order from the restaurants. A NYC food and restaurant data set is downloaded on this website, https://www.kaggle.com/datasets/ahsan81/food-ordering-and-delivery-app-dataset,  is also used in various studies, which focuses on the domain of sentiment analysis.
+
+```{r, echo=FALSE, fig.cap="Figure 1 A Website to Indentify Recommender System: https://foodhub.com", out.width = '20%'}
+knitr::include_graphics("Foodhub.png")
+
+
+```
+
+### Basic Architectures a Recommender System
+
+There are some basic architectures for a recommender system: such as 
+1.	Content-Based systems focus on properties of items. Similarity of items is determined by measuring the similarity in their properties.
+2.	Collaborative filtering systems focus on the relationship between users and items. Similarity of items is determined by the similarity of the ratings of those items by the users who have rated both items.
+3.	Location-based System focus on new users restaurant recommendations through the geographical locations they’re in, that suggesting restaurants that are around them
+
+
+
+### Preprocessing
+ 
+In this discussion assignment, the reviews are filtered and only the reviews from restaurant category are extracted. Once the necessary data is filtered, the reviews text are then processed by converting all the text into lower case, to keep the data consistent. Also, stop words such as the, is, at, etc. are removed from the review text, since these words contain no extra information for the analysis. Another benefit of removing stop words is that it reduces the amount of data that is to be processed, significantly, improving system efficiency. these preprocessing steps are crucial for creating a clean and manageable dataset, which can then be used for further analyses, such as sentiment analysis, feature extraction, and building recommendation engines.
+
+### Clustering
+
+Clustering techniques are divided into hierarchical and partitioning categories. In partitioning clustering, the number of clusters is determined at the beginning of the work, but in hierarchical clustering, it is not necessary to specify the number of clusters. Moreover, clusters produced in hierarchical clustering often have higher quality, but their time complexity is usually more than partitioning techniques. As data filtering reduces the number of nouns, agglomerative hierarchical clustering is exploited for categorizing nouns.
+
+In general, the similarity between the two concepts of $C_1$ and $C_2$, with the least common subsume of $C_3$, is equal to:
+$$
+\operatorname{Sim}\left(\mathrm{C}_1, \mathrm{C}_2\right)=\frac{2 N_3}{N_1+N_2+2 N_3}
+$$
+whereas Fig. 2 illustrates, $N_1$ represents the number of nodes on the $C_1$ to $C_3$ path, $N_2$ is the number of nodes on the $C_2$ to $C_3$ path, and $N_3$ is the number of nodes on the path between $\mathrm{C}_3$ and the root of the tree.
+
+Afterwards, the pair of clusters that have the smallest distance from each other are merged and the distance between the new cluster and the other clusters is calculated This process is repeated until the similarity between the clusters becomes less than a threshold value.
+
+
+## Building Recommendation Engines
+
+
+Generally, data is a collection of objects and their attributes, where an attribute is defined as a property or characteristics of an object such as record, item, point, sample, observation, or instance. An attribute is also referred to as a variable, field, characteristic or features.
+The primary focus of this assignment is to classify the dishes served at a particular restaurant and provide an overview of critical analytical techniques commonly used in Recommender Systems such as multi-label classification and sentiment analyses.
+
+
+### Multi-label Classification (MLC) Model
+
+For a formal description of multi-label classification task, $L=\left\{\lambda_j: j=1 \ldots q\right\}$ can be used to denote the finite set of labels and $D=\left\{\left(x_i ; Y_i\right), i=1 \ldots m\right\}$ to denote the set of training instances, where $x_i$ is the vector of characteristics and $Y_i \subset L$ is the subset of labels of the instance $i$.
+
+The subset of labels of the instance $i$ is defined then as a binary vector, $Y_i=\left\{y_1, y_2 \ldots y_q\right\}$, where every $y_j=1$ indicates the presence of the label $\lambda_j$ in the set of relevant labels for $x_i$. Using this convention, the output space can be also defined as $Y=\{0,1\}^q$. Finally, the aim of the classification multi-labels it is to assign the correct set of labels for a new instance $x$, that is, to predict if the label $\lambda_j$ must be assigned or not to the example $x$.
+
+There exist two main tasks in supervised learning from multi-labeled information: multilabel classification (MLC) and label ranking (LR). MLC refers to learning models providing as output a bipartition of the label set into relevant and irrelevant labels, however LR involves learning models providing labels ordered according to their relevance for a given instance.
+
+
+```{r, echo=FALSE, fig.cap="Figure 2: Block Diagaram for Multi-Label Classification Model", out.width = '60%'}
+knitr::include_graphics("Classification-Model.png")
+```
+
+
+### Sentiment Analysis
+
+Today, exploiting sentiment analysis has become popular in designing recommender systems in various fields, including the restaurant and food area. The analysis of users' opinions and the extraction of their food preferences lead to the provision of personalized recommendations, which is a research gap in literature; In this paper, a context-aware recommender system is proposed that extracts the food preferences of individuals from their reviews restaurants in accordance with these preferences. For this purpose, the semantic approach is used to cluster the name of foods extracted from users' comments and analyze their sentiments about them. Finally, nearby open restaurants are recommended based on their similarity to user preferences. 
+The opinions of previous customers are analyzed for each restaurant given the positive or negative opinions about their quality of food and services, restaurants whose sentiment analysis scores for these two features are less than 0.7 are filtered. This score for quality and service features is calculated using the following equation:
+
+Score of sentiment for each feature
+$$
+=\frac{\text { number of positive comments per feature }}{\text { the total number of comments related to that feature }}
+$$
+
+After extracting user preferences, the similarity of preferences is calculated with the menu of restaurants located around the user that are open at that time. Then, restaurants that their menus are the most like user preferences and have gained high scores based on comments from previous users are recommended to them. The restaurant menus are already available in the database, and pre-processing is performed including tokenizing multi-part names (for example, chicken pizza), removing stop words (such as with and to), and deleting unrelated characters (such as numeric characters and $\$$ ).
+
+To calculate the similarity between the cluster of user preferences and the restaurant menu, first all the features (food names) of them are extracted. Then the features (food names) in the preferences cluster are considered as columns of a matrix that includes row vectors of restaurant menus and the user preferences. The array in the preference row is filled according to the Term Frequency of features in the cluster of preferences.
+
+The cosine similarity criterion is then used to calculate the similarity between the user preferences and the restaurant menu
+$$
+\operatorname{Cos}(\theta)=\frac{P \cdot M}{|P||M|}=\frac{\sum_{i=1}^n P_i M_i}{\sqrt{\sum_{i=1}^n\left(P_i\right)^2} \sqrt{\sum_{i=1}^n\left(M_i\right)^2}}
+$$
+
+In this case, $\mathrm{P}$ is the vector of user preferences, $\mathrm{M}$ is the vector of the restaurant menu, P.M is the internal multiplication of the two vectors, $|\mathrm{M}|$ is the size of the preference vector, $|\mathrm{P}|$ is the size of the menu vector, and $\theta$ is the angle between the preference and menu vectors. $P_i$ is the $\mathrm{i}_{\mathrm{i}}^{\text {th }}$ element of the vector $P$, and $M_i$ is the $\mathrm{in}_{\mathrm{th}}^{\text {th }}$ element of the vector $M$.
+
+```{r, echo=FALSE, fig.cap="Figure 3: Matrix of User Preferences and Restaurant Menu", out.width = '60%'}
+knitr::include_graphics("Matrix of User-Menu.jpeg")
+```
+
+
+The result will be a number between 0 and 1. The number 1 indicates that the words in the preferences and the menu are identical, and the zero number represents the existence of totally dissimilar words in them.
+In the clustering process, these two names may be separated by assigning them into two clusters. Therefore, in the conversion stage of the features of the preferences cluster into a vector, other names found in the vicinity (immediately before or after) of the food names of the cluster are also included in the preferences vector. In the conversion of the menu to a vector, the multi-part names in the menu are separated, and each part is considered as a separate name. This will increase the precision of the recommendations.
+
+### Rating Evaluation
+
+
+Precision $=$ What percentage has been visited out of recommended restaurants.
+Recall $=$ Out of visited restaurants, what percentage has been recommended.
+
+F-measure $=2^*$
+
+F-measure $=2 * \frac{\text { Precision } * \text { Recall }}{(\text { Precision }+ \text { Recall })}$
+
+
+### Discussion and Conclusions
+
+This assignment is intended to be recommending the best dishes served at a restaurant to a new customer, based on previous customer reviews using classification, clustering and sentiment analysis techniques on customer reviews data to achieve a correctly classify food dishes into various classes. This method is based on the use of natural language processing techniques for processing the text of user comments and extracting the desired food names.  To obtain the opinion of the customer regarding each food, the sentiment analysis has been performed to indicate whether their opinion is positive or negative. Finally, a recommender system has been proposed that suggests the nearby restaurants that match the food preferences of the user. This recommender system seems like text mining, so that, by using customer preferences, location, time and feedback of all users, it recommends nearby restaurants that are open at that time and are well-matched with user’s preferences.The proposed recommendation system will be implementing in final project depending on the characteristics of data set. 
+
+
+References:
+
+1. Jure Leskovec, Anad Rajaraman, Jeffery David Ullman. "Mining of Massive Datasets". (Third Edition, 2020).     Cambridge University Press.
+2. https://www.sciencedirect.com/science/article.
+3. https://link.springer.com/chapter/10.1007.
+
+
